@@ -35,16 +35,20 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 
 //
-
+// 
+if(process.env.NODE_ENV === 'production'){
    app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
    app.get("*", (req, res)=>{
     res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"))
    })
-
+}else{
    app.get('/', (req, res)=>{
-    res.send("API is running successfully");
-   });
+      res.send("API is running successfully");
+     });
+}
+
+   
 
 
 
@@ -62,7 +66,7 @@ const server = app.listen(PORT, console.log("server run on port 5500"));
 const io = require("socket.io")(server, {
     pingTimeout : 60000,
     cors:{
-        origin:"http://localhost:5000/"
+        origin:"https://localhost:5000/"
     }
 })
 
